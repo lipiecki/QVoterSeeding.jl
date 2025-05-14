@@ -1,5 +1,5 @@
 """
-    seeding(network::Union{Symbol, String}, strategy::Symbol, zealots::Bool, q::Integer, budgets::AbstractVector{<:AbstractFloat}, rng::AbstractRNG = Random.default_rng())
+    seeding(network::Union{Symbol, String}, strategy::Symbol, zealots::Bool, q::Integer, budgets::AbstractVector{<:AbstractFloat}, rng::AbstractRNG = Random.default_rng(); kwargs...)
 Run network seeding experiments with `q`-voter dynamics with for a specified seeding `strategy` and seeding `budgets`. If `zealots = true`, seeds will act as zealots.
 
 Arguments `network` and `rng` are passed to [`loadnetwork`](@ref).
@@ -13,7 +13,7 @@ Available options for `strategy`:
 
 Return a vector of final concentrations of active vertices for each seeding budget.    
 """
-function seeding(network::Union{Symbol, String}, strategy::Symbol, zealots::Bool, q::Integer, budgets::AbstractVector{<:AbstractFloat}, rng::AbstractRNG = Random.default_rng())
+function seeding(network::Union{Symbol, String}, strategy::Symbol, zealots::Bool, q::Integer, budgets::AbstractVector{<:AbstractFloat}, rng::AbstractRNG = Random.default_rng(); kwargs...)
     strategy ∈ [:hd, :pr, :cc, :onehop, :random] || error("unknown strategy")
     g = loadnetwork(network, rng)
     if strategy == :hd
@@ -42,7 +42,7 @@ function seeding(network::Union{Symbol, String}, strategy::Symbol, zealots::Bool
                 active[i] && (flexible[i] = false)
             end
         end
-        results[s] = qvoter(g, active, q, flexible = flexible)
+        results[s] = qvoter(g, active, q; flexible = flexible, kwargs...)
     end
     return results
 end
