@@ -123,12 +123,15 @@ function prune!(g::SimpleGraph{<:Integer})
     pruned = false
     while !pruned
         pruned = true
-        for v in vertices(g)
+        v = 1
+        while v <= nv(g)
             rem_edge!(g, v, v)
             if degree(g, v) == 0  
                 rem_vertex!(g, v)
                 pruned = false
+                v -= 1
             end
+            v += 1
         end
     end
 end
