@@ -18,7 +18,7 @@ function seeding(network::AbstractString, strategy::Symbol, zealots::Bool, q::In
     return seeding(g, strategy, zealots, q, budgets; kwargs...)
 end
 
-function seeding(network::SimpleGraph, strategy::Symbol, zealots::Bool, q::Integer, budgets::AbstractVector{<:AbstractFloat}; kwargs...)
+function seeding(g::SimpleGraph, strategy::Symbol, zealots::Bool, q::Integer, budgets::AbstractVector{<:AbstractFloat}; kwargs...)
     strategy ∈ [:hd, :pr, :cc, :onehop, :random] || error("unknown strategy")
     if strategy == :hd
         rank = sortperm(degree(g), rev = true)
