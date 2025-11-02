@@ -1,8 +1,8 @@
 """
-    seeding(network::Union{AbstractString, SimpleGraph}, strategy::Symbol, zealots::Bool, q::Integer, budgets::AbstractVector{<:AbstractFloat}, rng::AbstractRNG = Random.default_rng(); kwargs...)
+    seeding(network::Union{Symbol, SimpleGraph}, strategy::Symbol, zealots::Bool, q::Integer, budgets::AbstractVector{<:AbstractFloat}, rng::AbstractRNG = Random.default_rng(); kwargs...)
 Run network seeding experiments with `q`-voter dynamics with for a specified seeding `strategy` and seeding `budgets`. If `zealots = true`, seeds will act as zealots.
 
-If `network` is an `AbstractString`, it is passed to [`loadnetwork`](@ref), along with the optional `rng` argument.
+If `network` is a `Symbol`, it is passed to [`loadnetwork`](@ref), along with the optional `rng` argument.
 
 Available options for `strategy`:
 - `:cc` - seeding nodes with the highest **c**omplex **c**entrality (adapted to q-voter dynamics)
@@ -13,7 +13,7 @@ Available options for `strategy`:
 
 Return a vector of final concentrations of active vertices for each seeding budget.    
 """
-function seeding(network::AbstractString, strategy::Symbol, zealots::Bool, q::Integer, budgets::AbstractVector{<:AbstractFloat}, rng::AbstractRNG = Random.default_rng(); kwargs...)
+function seeding(network::Symbol, strategy::Symbol, zealots::Bool, q::Integer, budgets::AbstractVector{<:AbstractFloat}, rng::AbstractRNG = Random.default_rng(); kwargs...)
     g = loadnetwork(network, rng)
     return seeding(g, strategy, zealots, q, budgets; kwargs...)
 end
