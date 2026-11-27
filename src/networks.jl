@@ -50,12 +50,12 @@ Optional argument `rng` specifies a random number generator used for generating 
 Return a tuple of the average clustering coefficient for a raw network and for a network ensemble.
 """
 function average_clustering(network::Union{Symbol, String}, m::Integer, rng::AbstractRNG = Random.default_rng())
-    δ₀, δ = 0.0, 0.0
     g = loadnetwork(network, preprocess = false)
     δ₀ = sum(local_clustering_coefficient(g))/nv(g)
+    δ = 0.0
     for _ in 1:m
         g = loadnetwork(network, rng)
-        δ = sum(local_clustering_coefficient(g))/nv(g)
+        δ += sum(local_clustering_coefficient(g))/nv(g)
     end
     return δ₀, δ/m
 end
@@ -74,12 +74,12 @@ Optional argument `rng` specifies a random number generator used for generating 
 Return a tuple of the average node degree for a raw network and for a network ensemble.
 """
 function average_degree(network::Union{Symbol, String}, m::Integer, rng::AbstractRNG = Random.default_rng())
-    k₀, k = 0.0, 0.0
     g = loadnetwork(network, preprocess = false)
     k₀ = sum(degree(g))/nv(g)
+    k = 0.0
     for _ in 1:m
         g = loadnetwork(network, rng)
-        k = sum(degree(g))/nv(g)
+        k += sum(degree(g))/nv(g)
     end
     return k₀, k/m
 end
@@ -98,12 +98,13 @@ Optional argument `rng` specifies a random number generator used for generating 
 Return a tuple of the average shortest path length for a raw network and for a network ensemble.
 """
 function average_pathlen(network::Union{Symbol, String}, m::Integer, rng::AbstractRNG = Random.default_rng())
-    D₀, D = 0.0, 0.0
     g = loadnetwork(network, preprocess = false)
+    D₀ = 0.0
     for v in vertices(g)
         D₀ += sum(dijkstra_shortest_paths(g, v).dists)
     end
     D₀ /= nv(g)*(nv(g)-1)
+    D = 0.0
     for _ in 1:m
         g = loadnetwork(network, rng)
         d = 0.0
